@@ -40,3 +40,5 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.listen('3000',() =>{
     console.log('server running at 127.0.0.1');
 });
+
+module.exports = app;
