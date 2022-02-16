@@ -13,7 +13,7 @@ exports.register = (req, res, next) => {
 
     //const bcryptpass = bcryptjs.hashSync(req.body.password, 10)
     const data = {
-        userinfo : req.body,
+        userinfo: req.body,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         emailId: req.body.emailId,
@@ -22,7 +22,7 @@ exports.register = (req, res, next) => {
 
     //bcrypt.hashSync(req.body.password, 10)
     console.log(data.password);
-     
+
     userService.register(data, (error, result) => {
         if (error) {
             console.log(error);
@@ -34,7 +34,7 @@ exports.register = (req, res, next) => {
         }
 
         // const tokenStr = jwt.sign({ username: data.firstName}, secretKey, {expiresIn:'30s'});
-        
+
         return res.status(200).send({
             status: 200,
             success: 1,
@@ -76,50 +76,60 @@ exports.self = (req, res, next) => {
     const code = jwt.decode(token)
 
     const data = {
-       emailId: code.emailId
+        emailId: code.emailId
     };
 
     // console.log(req.);
-    userService.self(data, (error, results)=> {
-        if(error) {
+    userService.self(data, (error, results) => {
+        if (error) {
             console.log(error);
-            return res.status(400).send({
-                status: 400,
+            return res.status(401).send({
+                status: 401,
                 success: 0,
                 data: 'bad request'
             });
+
         }
         return res.status(200).send({
-            status:200,
-            success:1,
+            status: 200,
+            success: 1,
             data: results
         })
     });
 }
- 
+
 exports.update = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const code = jwt.decode(token)
 
-    console.log("update-"+token)
+    console.log("update-" + token)
     const data = {
-        userinfo : req.body,
+        userinfo: req.body,
         emailId: code.emailId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         password: req.body.password,
         id: req.query.id,
-        account_created : req.body.account_created
+        account_created: req.body.account_created,
     };
 
-    console.log(data.account_created);
+    //update any other field should return 400 Bad Request HTTP response code.
+    var no = 0;
+    for (var o in data.userinfo) {
+        no++;
+    }
 
-    
+    if (no > 3) {
+        return res.status(400).send({
+            status: 400,
+            success: 0,
+            data: 'bad request'
+        });
+    }
+
     userService.updateUser(data, (error, result) => {
 
-        
-
-        if(error) {
+        if (error) {
             console.log(error);
             return res.status(400).send({
                 status: 400,
@@ -128,8 +138,8 @@ exports.update = (req, res, next) => {
             });
         }
         return res.status(200).send({
-            status:200,
-            success:1,
+            status: 200,
+            success: 1,
             data: result
         })
     });
