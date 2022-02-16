@@ -83,11 +83,12 @@ exports.self = (req, res, next) => {
     userService.self(data, (error, results) => {
         if (error) {
             console.log(error);
-            return res.status(400).send({
-                status: 400,
+            return res.status(401).send({
+                status: 401,
                 success: 0,
                 data: 'bad request'
             });
+
         }
         return res.status(200).send({
             status: 200,

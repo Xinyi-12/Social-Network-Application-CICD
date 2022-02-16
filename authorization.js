@@ -18,14 +18,14 @@ module.exports.generateToken = function (payload) {
 module.exports.verifyToken = function (req, res, next) {
 
   if(req.headers.authorization == undefined){
-    return res.json({ code: "403", msg: "invalid token" })
+    return res.json({ code: "401", msg: "invalid token" })
   }
   const token = req.headers.authorization.split(' ')[1];
   console.log("verify=" + token)
   jwt.verify(token, secretKey, function (err, decoded) {
     if (err) {
       console.log("verify error", err);
-      return res.json({ code: "400", msg: "invalid token" });
+      return res.json({ code: "401", msg: "invalid token" });
     }
   
     next();
