@@ -13,10 +13,12 @@ const userRoutes = require('./routes/users.route');
 const postRoutes = require('./routes/post.route');
 
 app.use(bodyParser.json());
-app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/user/] }))
-app.use('/user',userRoutes);
-app.use('/users/*', auth.verifyToken);
-app.use('/users', userRoutes);
+app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/] }))
+
+app.use('/v1/user', userRoutes);
+app.use('/v1/users/*', auth.verifyToken);
+app.use('/v1/users', userRoutes);
+
 app.use('/posts',postRoutes);
 
 
