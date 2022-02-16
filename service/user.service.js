@@ -70,6 +70,7 @@ exports.self = (data, callback) => {
 }
 
 exports.updateUser = (data, callback) => {
+
     const bcryptpass = bcrypt.hashSync(data.userinfo.password);
 
     db.query(
@@ -78,13 +79,13 @@ exports.updateUser = (data, callback) => {
          account_updated =? where emailId = ?`,
         [data.firstName, data.lastName, bcryptpass ,new Date() , data.emailId],
         (error, results, fields) => {
+     
             console.log(results);
 
             if (error) {
                 return callback(error);
             }
 
-        
             if (results.affectedRows === 1) {
                 
                 console.log(data.firstName);
