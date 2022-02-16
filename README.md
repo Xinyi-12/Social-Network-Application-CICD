@@ -1,16 +1,16 @@
 ## Table of contents
 
-* [Assignment requirement](#assignment-reqirement)
-* [Technologies](#technologies)
-* [Getting Started](#gettingstarted)
-* [My details](#my-details)
+- [Table of contents](#table-of-contents)
+- [Assignment requirement](#assignment-requirement)
+- [Technologies](#technologies)
+- [Getting Started](#getting-started)
+- [My details](#my-details)
 
 ## Assignment requirement
 
 **Requirements:**
 
-Create a web application using a technology stack that meets Cloud-Native Web Application Requirements.
-
+Create a web application, RESTful API Endpoints To Be Implemented, setup AWS organization and AWS IAM
 ## Technologies
 
 Project is created with:
