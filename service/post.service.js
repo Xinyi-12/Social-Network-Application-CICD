@@ -20,11 +20,13 @@ exports.getAllPosts = (data, callback) => {
          p.dislikeCount, p.addedByUserId , u.firstName, u.lastName 
          from posts as p INNER JOIN users AS u ON p.addedByUserId = u.id`,
          [],
-         (error, results, fields) => {
+         (error, result, fields) => {
+           // let postInString = JSON.stringify(result[0]);
+            // console.log(result);
              if(error) {
                  return callback(error);
              }
-             return callback(null, results);
+             return callback(null, result);
          }
     );
 

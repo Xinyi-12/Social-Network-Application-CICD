@@ -2,14 +2,20 @@ const express = require('express');
 const bodyParser= require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const auth = require('./authorization');
+const expressJWT = require('express-jwt');
+
 
 const app = express();
+
 
 const userRoutes = require('./routes/users.route');
 const postRoutes = require('./routes/post.route');
 
-
 app.use(bodyParser.json());
+app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/user/] }))
+app.use('/user',userRoutes);
+app.use('/users/*', auth.verifyToken);
 app.use('/users', userRoutes);
 app.use('/posts',postRoutes);
 
