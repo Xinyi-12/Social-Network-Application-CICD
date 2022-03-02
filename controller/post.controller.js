@@ -37,9 +37,9 @@ exports.getAllPosts = (req, res, next)=>{
                 data: 'bad request'
             });
         }
-        return res.status(200).send({
-            status:200,
-            success:1,
+        return res.status(400).send({
+            status:400,
+            success:0,
             data: result
         })
     });
