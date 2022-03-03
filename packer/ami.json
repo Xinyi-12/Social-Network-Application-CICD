@@ -34,8 +34,8 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "/root/webservice-1",
-            "destination": "/tmp"
+            "source": "/webservice-1/package.json",
+            "destination": "/tmp/package.json"
         },
         {
             "type": "shell",
