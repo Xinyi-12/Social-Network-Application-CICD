@@ -11,7 +11,7 @@ const app = express();
 
 const userRoutes = require('./routes/users.route');
 const postRoutes = require('./routes/post.route');
-
+app.use('/healthz',userRoutes);
 app.use(bodyParser.json());
 app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/] }))
 
@@ -46,7 +46,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 app.listen('3000',() =>{
-    console.log('server running at 127.0.0.1');
+    console.log('server running at 54.152.114.229');
 });
 
 module.exports = app;
