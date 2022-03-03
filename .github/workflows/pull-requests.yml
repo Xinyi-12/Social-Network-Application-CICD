@@ -31,3 +31,16 @@ jobs:
         target: ami.json
       env:
         PACKER_LOG: 1 # enable debug log for packer
+        
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+  
+    # Ref: https://github.com/marketplace/actions/packer-github-actions
+    - name: build Packer Template
+      uses: hashicorp/packer-github-actions@master
+      with:
+        command: build
+        arguments: -syntax-only # only validate syntax
+        target: ami.json
+
