@@ -15,4 +15,7 @@ router.get('/self', userController.self);
 
 router.put('/self', userController.update);
 
+router.get("/", userController.health);
+
+
 module.exports = router;

@@ -144,3 +144,16 @@ exports.update = (req, res, next) => {
         })
     });
 }
+
+exports.health = (req, res, next) => {
+    res.status(200).send({
+        status: 200
+    
+    })
+
+    res.status(404).send({
+        status: 404
+    
+    })
+
+}

@@ -11,7 +11,7 @@ const app = express();
 
 const userRoutes = require('./routes/users.route');
 const postRoutes = require('./routes/post.route');
-
+app.use('/healthz',userRoutes);
 app.use(bodyParser.json());
 app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/] }))
 

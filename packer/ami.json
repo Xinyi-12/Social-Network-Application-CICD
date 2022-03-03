@@ -38,9 +38,11 @@
             ],
             "inline":[
                 "sudo apt-get update",
+                "sudo apt-get install upstart",
                 "sudo apt-get install mysql-server -y",
                 "mysql --version",
-                "sudo mysql_secure_installation"
+                "sudo mysql_secure_installation",
+                "sudo apt-get install node"
 
             ]
         }
