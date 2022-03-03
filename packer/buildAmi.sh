@@ -13,10 +13,10 @@ node -v
 sudo npm install -g pm2
 
 # Configure pm2 to run hellonode on startup
-mkdir -p ~/code/app-dist
-mv /tmp/package.json ~/code/app-dist/package.json
-cd  ~/code/app-dist/
-sudo pm2 start package.json
+# mkdir -p ~/code/app-dist
+# mv /root/webservice-1/package.json ~/code/app-dist/package.json
+# cd  ~/code/app-dist/
+sudo pm2 start ./index.js
 sudo pm2 startup systemd
 sudo pm2 save
 sudo pm2 list

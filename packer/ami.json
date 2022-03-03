@@ -34,16 +34,15 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "/webservice-1/package.json",
-            "destination": "/tmp/package.json"
+            "source": "./",
+            "destination": "/home/ec2-user/"
         },
         {
             "type": "shell",
-            "script" : "buildAmi.sh"
+            "script" : "packer/buildAmi.sh"
             
         }
     ]
 }
-
 
 
