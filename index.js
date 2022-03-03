@@ -45,7 +45,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 
-app.listen('80',() =>{
+app.listen('3000',() =>{
     console.log('server running at 54.152.114.229');
 });
 
