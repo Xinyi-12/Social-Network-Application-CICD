@@ -1,5 +1,3 @@
-#!/bin/bash
-packer build -var-file='infrastructure/packer/vars.json' ami.json
 #!/bin/sh
 sleep 30
 # Install node js
@@ -29,8 +27,8 @@ sudo systemctl unset-environment MYSQLD_OPTS
 sudo systemctl enable --now mysqld
 sudo mysql -u root -p"Greed36381190715@" -e "
 CREATE DATABASE  IF NOT EXISTS $(cloudComputing)/*!40100 DEFAULT CHARACTER SET utf8 */;
-USE $(cloudComputing);
 USE $( cloudComputing);
+
 DROP TABLE IF EXISTS $(users);
 CREATE TABLE $(users) (
   $(id) int(11) NOT NULL AUTO_INCREMENT,
@@ -51,3 +49,4 @@ sudo pm2 start ./index.js
 sudo pm2 startup systemd
 sudo pm2 save
 sudo pm2 list
+
