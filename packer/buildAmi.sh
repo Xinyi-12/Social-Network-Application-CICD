@@ -28,6 +28,7 @@ sudo systemctl enable --now mysqld
 sudo mysql -u root -p"Greed36381190715@" -e "
 CREATE DATABASE  IF NOT EXISTS $(cloudComputing)/*!40100 DEFAULT CHARACTER SET utf8 */;
 USE $(cloudComputing);
+USE $( cloudComputing);
 
 DROP TABLE IF EXISTS $(users);
 CREATE TABLE $(users) (
