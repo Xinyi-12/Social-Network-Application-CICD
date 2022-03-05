@@ -1,14 +1,15 @@
 {
     "variables": {
-        "aws_access_key": "",
-        "aws_secret_key": "",
-        "aws_region": "",
-        "subet_id": "",
-        "source_ami":"",
-        "ssh_username":"ubuntu"
+        "aws_access_key": "AKIA2EQZ22POUM2MW2XP",
+        "aws_secret_key": "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",
+        "aws_region": "us-east-1",
+        "subnet_id": "subnet-08a1db822522db7d8",
+        "source_ami":"ami-0c293f3f676ec4f90",
+        "ssh_username":"ec2-user"
     },
     "builders": [
         {
+
             "type": "amazon-ebs",
             "access_key": "{{user `aws_access_key`}}",
             "secret_key": "{{user `aws_secret_key`}}",
@@ -16,8 +17,8 @@
             "instance_type": "t2.micro",
             "subnet_id" : "{{user `subnet_id`}}",
             "source_ami" : "{{user `source_ami`}}",
-            "ami_name": "csye6225_fall2021_{{timetamp}}",
-            "ssh_username": "{{uer `ssh_username`}}",
+            "ami_name": "csye6225_fall2021_{{timestamp}}",
+            "ssh_username": "{{user `ssh_username`}}",
             "ami_description" : "Ubuntu AMI for CSYE 6225",
             "launch_block_device_mappings" : [
                 {
@@ -32,16 +33,16 @@
     ],
     "provisioners": [
         {
+            "type": "file",
+            "source": "./",
+            "destination": "/home/ec2-user/"
+        },
+        {
             "type": "shell",
-            "environment_vars" : [
-                "FOO=foo"
-            ],
-            "inline":[
-                "sudo apt-get update",
-                "sudo apt-get install nginx -y"
-
-            ]
+            "script" : "packer/buildAmi.sh"
+            
         }
+
     ]
 }
 
