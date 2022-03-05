@@ -40,7 +40,6 @@ CREATE TABLE $(users) (
   PRIMARY KEY ($(id)),
   UNIQUE KEY $(emailId_UNIQUE) ($(emailId))
 ) ENGINE=InnoDB AUTO_INCREMENT=142 DEFAULT CHARSET=utf8;
-
 LOCK TABLES $(users) WRITE;
 UNLOCK TABLES;
 show tables;
