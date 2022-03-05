@@ -1,7 +1,7 @@
 {
-    "aws_access_key": "",
-    "aws_secret_key": "",
-    "aws_region": "us-east",
-    "subet_id": "",
-    "source_ami":""
+    "aws_access_key": "AKIA2EQZ22POUM2MW2XP",
+    "aws_secret_key": "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",
+    "aws_region": "us-east-1",
+    "subet_id": "subnet-08a1db822522db7d8",
+    "source_ami":"ami-0c293f3f676ec4f90"
 }
