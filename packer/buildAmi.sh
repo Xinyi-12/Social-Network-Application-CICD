@@ -12,9 +12,7 @@ node -v
 # Install pm2
 sudo npm install -g pm2
 
-
 sudo pm2 start ./index.js
 sudo pm2 startup systemd
 sudo pm2 save
 sudo pm2 list
-
