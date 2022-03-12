@@ -97,3 +97,7 @@ exports.updateUser = (data, callback) => {
 
     )
 }
+
+exports.addorUpdateProfilePic = (data, callback) => {
+
+}

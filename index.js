@@ -4,23 +4,26 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const auth = require('./authorization');
 const expressJWT = require('express-jwt');
+const multer = require('multer');
 
 
 const app = express();
 
-
+app.use(bodyParser.json());
 const userRoutes = require('./routes/users.route');
 const postRoutes = require('./routes/post.route');
+// app.use(multer().single('file'));
 app.use('/healthz',userRoutes);
-app.use(bodyParser.json());
-app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/] }))
+
+app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/,/^\/healthz/] }))
 
 app.use('/v1/user', userRoutes);
-app.use('/v1/users/*', auth.verifyToken);
-app.use('/v1/users', userRoutes);
+
+app.use('/v1/user/*', auth.verifyToken);
+// app.use('/v1/user/self/*', auth.verifyToken);
+
 
 app.use('/posts',postRoutes);
-
 
 
 /** Swagger Initialization */
@@ -50,3 +53,5 @@ app.listen('3000',() =>{
 });
 
 module.exports = app;
+
+
