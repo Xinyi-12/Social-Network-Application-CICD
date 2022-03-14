@@ -6,7 +6,9 @@ const { generateToken } = require('../authorization');
 const decode = require('jwt-decode');
 // const uuid = require('uuid');
 const uuid = require('node-uuid');
-const { uploadFile} = require('../s3');
+const { uploadFile } = require('../s3');
+const db = require('../config/db.config');
+
 
 
 // app.use(expressJWT(secretKey));
@@ -15,12 +17,12 @@ exports.health = (req, res, next) => {
     res.status(200).send({
         status: 200,
         a: 3
-    
+
     })
 
     res.status(404).send({
         status: 404
-    
+
     })
 
 }
@@ -65,9 +67,19 @@ exports.register = (req, res, next) => {
 exports.login = (req, res, next) => {
     //validation area
 
+
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    const encoded = authorization.substring(6);
+    const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    const [email, password] = decoded.split(':');//[emailId, password]
+
     const data = {
-        emailId: req.body.emailId,
-        password: req.body.password
+        emailId: email,
+        password: password
     };
 
     console.log("controller----" + req.body.emailId + " " + req.body.password);
@@ -90,14 +102,44 @@ exports.login = (req, res, next) => {
 };
 
 exports.self = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const code = jwt.decode(token)
+
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    const encoded = authorization.substring(6);
+    const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    const [email, password] = decoded.split(':');//[emailId, password]
 
     const data = {
-        emailId: code.emailId
+        emailId: email,
+        password: password
     };
 
-    // console.log(req.);
+    db.query(
+        `SELECT * FROM users where emailId = ?`,
+        [data.emailId],
+
+        (error, results, fields) => {
+
+            if (error) {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+            console.log("=== " + data.password + " : " + results[0].password);
+            const compareResult = bcrypt.compareSync(data.password, results[0].password);
+            console.log(compareResult);
+            // compareResult = true;
+            console.log(results);
+
+            if (results.length > 0 && compareResult) {
+                return;
+            } else {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+        }
+    )
+
     userService.self(data, (error, results) => {
         if (error) {
             console.log(error);
@@ -109,29 +151,56 @@ exports.self = (req, res, next) => {
 
         }
         return res.status(200).send({
-            status: 200,
-            success: 1,
             data: results
         })
     });
+
 }
 
 exports.update = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const code = jwt.decode(token)
 
-    console.log("update-" + token)
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    const encoded = authorization.substring(6);
+    const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    const [email, password] = decoded.split(':');//[emailId, password]
+
     const data = {
+        emailId: email,
+        password: password,
         userinfo: req.body,
-        emailId: code.emailId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        password: req.body.password,
         id: req.query.id,
         account_created: req.body.account_created,
     };
 
-    //update any other field should return 400 Bad Request HTTP response code.
+    db.query(
+        `SELECT * FROM users where emailId = ?`,
+        [data.emailId],
+
+        (error, results, fields) => {
+
+            if (error) {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+            console.log("=== " + data.password + " : " + results[0].password);
+            const compareResult = bcrypt.compareSync(data.password, results[0].password);
+            console.log(compareResult);
+            // compareResult = true;
+            console.log(results);
+
+            if (results.length > 0 && compareResult) {
+                return;
+            } else {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+        }
+    )
+
     var no = 0;
     for (var o in data.userinfo) {
         no++;
@@ -156,8 +225,6 @@ exports.update = (req, res, next) => {
             });
         }
         return res.status(200).send({
-            status: 200,
-            success: 1,
             data: result
         })
     });
@@ -166,57 +233,229 @@ exports.update = (req, res, next) => {
 
 exports.addorUpdateProfilePic = async (req, res, next) => {
 
-    const token = req.headers.authorization.split(' ')[1];
-    const code = jwt.decode(token)
-    const key = `${code.emailId}/${uuid.v1()}.jpeg`;
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    const encoded = authorization.substring(6);
+    const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    const [email, password] = decoded.split(':');//[emailId, password]
+
+    const data = {
+        emailId: email,
+        password: password,
+        fileName: req.file.originalname,
+        url: req.file.path
+
+    };
+
+    db.query(
+        `SELECT * FROM users where emailId = ?`,
+        [data.emailId],
+
+        (error, results, fields) => {
+
+            if (error) {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+            // console.log("=== " + data.password + " : " + results[0].password);
+            const compareResult = bcrypt.compareSync(data.password, results[0].password);
+            console.log(compareResult);
+            // compareResult = true;
+            console.log(results);
+
+            if (results.length > 0 && compareResult) {
+                return;
+            } else {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+        }
+    )
+
+    db.query(
+        `SELECT id FROM users where emailId = ?`,
+        [data.emailId],
+        (error, results, fields) => {
+            console.log("------------")
+            console.log(results[0].id);
+            data.addedByUserId = results[0].id
+        }
+    )
+
     const file = req.file;
     console.log(file);
 
     const result = await uploadFile(file);
     console.log(result);
 
-    userService.addorUpdateProfilePic(data, (error, result) => {
+    setTimeout(function () {
+        userService.addorUpdateProfilePic(data, (error, result) => {
 
-        if (error) {
-            console.log(error);
-            return res.status(400).send({
-                status: 400,
-                success: 0,
-                data: 'bad request'
-            });
-        }
-        return res.status(200).send({
-            status: 200,
-            success: 1,
-            data: result
+            if (error) {
+                console.log(error);
+                return res.status(400).send({
+                    status: 400,
+                    success: 0,
+                    data: 'bad request'
+                });
+            }
+            return res.status(200).send({
+                status: 200,
+                success: 1,
+                data: result
+            })
         })
-    })
+    }, 1000);
 }
 
 exports.getProfilePic = (req, res, next) => {
-    res.status(200).send({
-        status: 200
-    
-    })
 
-    res.status(404).send({
-        status: 404
-    
-    })
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    const encoded = authorization.substring(6);
+    const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    const [email, password] = decoded.split(':');//[emailId, password]
+
+    const data = {
+        emailId: email,
+        password: password,
+
+    };
+
+
+    db.query(
+        `SELECT * FROM users where emailId = ?`,
+        [data.emailId],
+
+        (error, results, fields) => {
+
+            if (error) {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+            const compareResult = bcrypt.compareSync(data.password, results[0].password);
+            console.log("--" + compareResult);
+            console.log(results);
+
+            if (results.length > 0 && compareResult) {
+                return;
+            } else {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+        }
+    )
+
+
+
+    db.query(
+        `SELECT id FROM users where emailId = ?`,
+        [data.emailId],
+        (error, results, fields) => {
+            console.log("------------")
+            console.log(results[0].id);
+            data.userId = results[0].id;
+        }
+    )
+
+
+    setTimeout(function () {
+        userService.getProfilePic(data, (error, result) => {
+
+
+            if (error) {
+                console.log(error);
+                return res.status(400).send({
+                    status: 400,
+                    success: 0,
+                    data: 'bad request'
+                });
+            }
+            return res.status(200).send({
+                status: 200,
+                success: 1,
+                data: result
+            })
+        })
+    }, 1000);
 
 }
 
-exports.deleteProfilePic = (req, res, next) => {
-    res.status(200).send({
-        status: 200,
-        a: 3
-    
-    })
 
-    res.status(404).send({
-        status: 404
-    
-    })
+exports.deleteProfilePic = (req, res, next) => {
+
+    const authorization = req.headers.authorization;
+    if (!authorization) {
+        return res.status(403).send({ message: 'Forbidden' });
+    }
+
+    const encoded = authorization.substring(6);
+    const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    const [email, password] = decoded.split(':');//[emailId, password]
+
+    const data = {
+        emailId: email,
+        password: password,
+
+    };
+
+
+    db.query(
+        `SELECT * FROM users where emailId = ?`,
+        [data.emailId],
+
+        (error, results, fields) => {
+
+            if (error) {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+            const compareResult = bcrypt.compareSync(data.password, results[0].password);
+            console.log("--" + compareResult);
+            console.log(results);
+
+            if (results.length > 0 && compareResult) {
+                return;
+            } else {
+                return res.status(403).send({ message: 'Forbidden' });
+            }
+        }
+    )
+
+
+
+    db.query(
+        `SELECT id FROM users where emailId = ?`,
+        [data.emailId],
+        (error, results, fields) => {
+            console.log("------------")
+            console.log(results[0].id);
+            data.userId = results[0].id;
+        }
+    )
+
+
+    setTimeout(function () {
+        userService.deleteProfilePic(data, (error, result) => {
+
+
+            if (error) {
+                console.log(error);
+                return res.status(400).send({
+                    status: 400,
+                    success: 0,
+                    data: 'bad request'
+                });
+            }
+            return res.status(200).send({
+                status: 200,
+                success: 1,
+                data: result
+            })
+        })
+    }, 1000);
+
 }
 
 // {

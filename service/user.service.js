@@ -56,6 +56,7 @@ exports.login = (data, callback) => {
 };
 
 exports.self = (data, callback) => {
+    
     db.query(
         `select u.firstName, u.lastName, u.emailId , u.account_created , u.account_updated from users AS u where emailId = ?`,
         [data.emailId],
@@ -99,5 +100,59 @@ exports.updateUser = (data, callback) => {
 }
 
 exports.addorUpdateProfilePic = (data, callback) => {
+    db.query(
+        'INSERT INTO images (description, imagePath, datetimeCreated, addedByUserId) VALUEs (?,?,?,?)',
+        [data.fileName, data.url, new Date(), data.addedByUserId],
+        (error, results, fields) => {
+            if (error) {
+                return callback(error);
+            }
+            return callback(null, `add successful`);
+        }
 
+    );
 }
+
+
+exports.getProfilePic = (data, callback) => {
+
+    db.query(
+
+        `select * from images where addedByUserId = ?`,
+        [data.userId],
+
+        (error, results, fields) => {
+            console.log("data-" + data.userId);
+            if (error) {
+                return callback(error);
+            }
+            console.log("-----")
+            console.log(results)
+            return callback(null, results);
+        }
+
+    );
+}
+
+exports.deleteProfilePic = (data, callback) => {
+
+    db.query(
+
+        `delete from images where addedByUserId = ?`,
+        [data.userId],
+
+        (error, results, fields) => {
+            console.log("data-" + data.userId);
+            if (error) {
+                return callback(error);
+            }
+            console.log("-----")
+            console.log(results)
+            return callback(null, results);
+        }
+
+    );
+}
+
+
+

@@ -15,11 +15,11 @@ const postRoutes = require('./routes/post.route');
 // app.use(multer().single('file'));
 app.use('/healthz',userRoutes);
 
-app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/,/^\/healthz/] }))
+// app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/,/^\/healthz/] }))
 
 app.use('/v1/user', userRoutes);
 
-app.use('/v1/user/*', auth.verifyToken);
+// app.use('/v1/user/*', auth.verifyToken);
 // app.use('/v1/user/self/*', auth.verifyToken);
 
 
