@@ -34,7 +34,6 @@
    
     "provisioners": [
         {
-            {
             "type": "file",
             "source": "./",
             "destination": "/home/ec2-user/"

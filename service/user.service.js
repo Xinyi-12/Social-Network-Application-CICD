@@ -8,6 +8,7 @@ const { self } = require('../controller/user.controller');
 
 
 
+
 exports.register = (data, callback) => {
     //const bcryptpass = data.userinfo.password.
 

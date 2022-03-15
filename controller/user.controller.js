@@ -16,7 +16,6 @@ const db = require('../config/db.config');
 exports.health = (req, res, next) => {
     res.status(200).send({
         status: 200,
-        a: 3
 
     })
 
