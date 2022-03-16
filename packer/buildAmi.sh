@@ -1,5 +1,5 @@
 #!/bin/sh
-sleep 20
+sleep 30
 # Install node js
 sudo yum install -y gcc-c++ make
 sudo yum install --assumeyes curl
@@ -8,4 +8,10 @@ sudo yum install -y nodejs
 node -v
 
 # Install pm2
+sudo yum update -y
 sudo npm install -g pm2
+sudo pm2 start ./index.js
+sudo pm2 startup systemd
+sudo pm2 save
+sudo pm2 list
+

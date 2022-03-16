@@ -19,8 +19,6 @@ app.use('/healthz',userRoutes);
 
 app.use('/v1/user', userRoutes);
 
-// app.use('/v1/user/*', auth.verifyToken);
-// app.use('/v1/user/self/*', auth.verifyToken);
 
 
 app.use('/posts',postRoutes);

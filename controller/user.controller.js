@@ -258,12 +258,9 @@ exports.addorUpdateProfilePic = async (req, res, next) => {
             if (error) {
                 return res.status(403).send({ message: 'Forbidden' });
             }
-            // console.log("=== " + data.password + " : " + results[0].password);
             const compareResult = bcrypt.compareSync(data.password, results[0].password);
             console.log(compareResult);
-            // compareResult = true;
             console.log(results);
-
             if (results.length > 0 && compareResult) {
                 return;
             } else {
@@ -276,7 +273,6 @@ exports.addorUpdateProfilePic = async (req, res, next) => {
         `SELECT id FROM users where emailId = ?`,
         [data.emailId],
         (error, results, fields) => {
-            console.log("------------")
             console.log(results[0].id);
             data.addedByUserId = results[0].id
         }
