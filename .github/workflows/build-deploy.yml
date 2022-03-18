@@ -8,6 +8,10 @@ env:
   CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: csye6225-webapp-deployment
   AWS_REGION: us-east-1
   S3_CODEDEPLOY_BUCKET: myxinyiapp-codedeploy
+  AWS_BUCKET_NAME : "encryptedbucket01-info6255-userpic.dev.xinyapp.me"
+  AWS_BUCKET_REGION: "us-east-1"
+  AWS_ACCESS_KEY: "AKIA2EQZ22PO56Q33A37"
+  AWS_SECRET_KEY: "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"
 
 
 # Controls when the workflow will run
@@ -61,6 +65,13 @@ jobs:
           cd ..
           pwd
           ls -al
+          
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_KEY}}
+          aws-region: ${{ env.AWS_BUCKET_REGION }}
 
       - name: Copy Artifact to S3_CODEDEPLOY_BUCKET
 
