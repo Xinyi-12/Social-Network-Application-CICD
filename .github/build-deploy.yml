@@ -1,0 +1,78 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build & Deploy WebApp 
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+  
+jobs:
+  
+  build:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+
+      - name: Build image from template
+        run: |
+         packer build packer/ami.json
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+  
+  ci_cd:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 
+      - uses: actions/checkout@v2
+
+      # 
+      - name: Build Deployment Artifact
+        run: |
+          mkdir codedeploy_artifact
+          zip -r ${{ env.ARTIFACT_NAME }} codedeploy/*.sh appspec.yml 
+          pwd
+          ls -al
+          mv ${{ env.ARTIFACT_NAME }} codedeploy_artifact/
+          ls -al
+          pwd
+          cd codedeploy_artifact
+          ls -al
+          cd ..
+          pwd
+          ls -al
+
+
+      # Runs a set of commands using the runners shell
+      - name: CodeDeploy API call
+        run: |
+          output=$(aws deploy create-deployment \
+            --application-name ${{ env.CODEDEPLOY_APPLICATION_NAME }} \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name ${{ env.CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME}} \
+            --description "CSYE6225 - CodeDeploy" \
+            --s3-location bucket=${{ env.S3_CODEDEPLOY_BUCKET }},key=${{ env.ARTIFACT_NAME }},bundleType=zip \
+            --region ${{ env.AWS_REGION}} \
+            --output json)
+
+          echo $output
+
+          dId=${echo $output | jq -r '.deploymentId'}
+          aws deploy wait Deployment-successful --deployment-id $dId
+
+
+        
+        
+        
