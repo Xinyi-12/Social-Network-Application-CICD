@@ -1,7 +1,7 @@
 #!/bin/bash
 export PATH=/home/ec2-user/.nvm/versions/node/v17.8.0/bin:/usr/local/bin:/usr/local/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin:$PATH
 
-pm2 stop app.js
+pm2 stop index.js
 pm2 delete all
 sudo ps -ef | grep /etc/.pm2 |cut -c 9-15 | xargs sudo kill -9
 sudo ps -ef | grep /home/ec2-user/.pm2 |cut -c 9-15 | xargs sudo kill -9

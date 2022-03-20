@@ -9,17 +9,3 @@ cd /home/ec2-user/
 # ls
 pm2 start index.js
 
-
-
-# pm2 start ../app.js
-# sudo pm2 start app.js
-
-
-
-
-# cd /home/ec2-user
-# npm install
-# sudo pm2 start ./app.js
-# sudo pm2 startup systemd
-# sudo pm2 save
-# sudo pm2 list
