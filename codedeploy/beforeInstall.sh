@@ -22,8 +22,8 @@ sudo rm -rf /home/ec2-user/index.js
 sudo rm -rf /home/ec2-user/package.json
 # sudo rm -rf /home/ec2-user/node_modules 
 sudo rm -rf /home/ec2-user/package-lock.json
-# sudo rm -rf /home/ec2-user/ami.json
+sudo rm -rf /home/ec2-user/packer/ami.json
 sudo rm -rf /home/ec2-user/appspec.yml
 sudo rm -rf /home/ec2-user/README.md 
 # sudo rm -rf /home/ec2-user/test.js
-# sudo rm -rf /home/ec2-user/buildAmi.sh
+sudo rm -rf /home/ec2-user/packer/buildAmi.sh
