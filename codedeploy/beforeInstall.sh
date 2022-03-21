@@ -29,4 +29,5 @@ sudo rm -rf /home/ec2-user/packer/buildAmi.sh
 sudo rm -rf /home/ec2-user/appspec.yml
 sudo rm -rf /home/ec2-user/README.md 
 sudo rm -rf /home/ec2-user/tests
+sudo rm -rf /home/ec2-user/test.txt
 
