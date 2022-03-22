@@ -10,7 +10,8 @@ const S3 = require('aws-sdk/clients/s3')
 
 const bucketName = "encryptedbucket01-info6255-userpic.dev.xinyapp.me"
 const region = "us-east-1"
-
+const accessKeyId =  "AKIA2EQZ22PO56Q33A37"
+const secretAccessKey = "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"
 
 const s3 = new S3({
   region,
