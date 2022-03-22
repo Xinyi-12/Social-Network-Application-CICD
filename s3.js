@@ -1,12 +1,13 @@
 require('dotenv').config()
+const dbConfig = require("../model/config");
 const fs = require('fs')
 const S3 = require('aws-sdk/clients/s3')
 // const keys = require('../config/dev');
 
-const bucketName = process.env.AWS_BUCKET_NAME
-const region = process.env.AWS_BUCKET_REGION
-const accessKeyId = "AKIA2EQZ22PO56Q33A37"
-const secretAccessKey = "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"
+const bucketName = dbConfig.AWS_BUCKET_NAME
+const region = dbConfig.AWS_BUCKET_REGION
+const accessKeyId = dbConfig.AWS_ACCESS_KEY
+const secretAccessKey = dbConfig.AWS_SECRET_KEY
 
 const s3 = new S3({
   region,
