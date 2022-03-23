@@ -1,5 +1,5 @@
 require('dotenv').config()
-const dbConfig = require("../model/config");
+// const dbConfig = require("../model/config");
 const fs = require('fs')
 const S3 = require('aws-sdk/clients/s3')
 // const keys = require('../config/dev');
