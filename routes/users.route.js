@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 
 //create a user 
- router.post('/new', userController.register);
+ router.post('/new02', userController.register);
 
 
 
