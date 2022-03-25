@@ -3,15 +3,15 @@ const fs = require('fs')
 const S3 = require('aws-sdk/clients/s3')
 // const keys = require('../config/dev');
 
-// const bucketName = process.env.AWS_BUCKET_NAME
-// const region = process.env.AWS_BUCKET_REGION
-// const accessKeyId = process.env.AWS_ACCESS_KEY
-// const secretAccessKey = process.env.AWS_SECRET_KEY
+const bucketName = process.env.AWS_BUCKET_NAME
+const region = process.env.AWS_BUCKET_REGION
+const accessKeyId = process.env.AWS_ACCESS_KEY
+const secretAccessKey = process.env.AWS_SECRET_KEY
 
-const bucketName = "encryptedbucket01-info6255-userpic.dev.xinyapp.me"
-const region = "us-east-1"
-const accessKeyId =  "AKIA2EQZ22POUM2MW2XP"
-const secretAccessKey = "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"
+// const bucketName = "encryptedbucket01-info6255-userpic.dev.xinyapp.me"
+// const region = "us-east-1"
+// const accessKeyId =  "AKIA2EQZ22POUM2MW2XP"
+// const secretAccessKey = "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"
 
 const s3 = new S3({
   region,
