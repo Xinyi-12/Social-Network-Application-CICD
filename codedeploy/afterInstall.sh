@@ -13,5 +13,5 @@ sudo chmod 775 /home/ec2-user/node_modules
 # npm install
 npm -f install
 sudo rm -rf /home/ec2-user/.pm2
-# sudo amazon-cloudformation-agent-ctl -m ec2 -a start
-# sudo amazon-cloudformation-agent-ctl -m ec2 -a status
+sudo amazon-cloudformation-agent-ctl -m ec2 -a start
+sudo amazon-cloudformation-agent-ctl -m ec2 -a status
