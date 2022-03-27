@@ -18,6 +18,14 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient()
 
+const SESConfig = {
+    apiVersion: "2010-12-01",
+    accessKeyId: "AKIA2EQZ22PO56Q33A37",      // should be:  process.env.AWS_ACCESS_ID
+    secretAccessKey: "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",  
+    region: "us-east-1"
+}
+
+AWS.config.update(SESConfig);
 
 
 // app.use(expressJWT(secretKey));
@@ -50,11 +58,11 @@ exports.register = async (req, res, next) => {
         };
         const tokgen = new TokenGenerator(256, TokenGenerator.BASE62);
 
-        // const uuid = v4();
+        const uuid = tokgen.generate();
         const character = {
 
             username: req.body.emailId,
-            token: tokgen.generate(),
+            token: uuid,
             ttl: Math.floor(Date.now() / 1000) + 2 * 60
 
         }
@@ -66,6 +74,7 @@ exports.register = async (req, res, next) => {
         }
 
         await docClient.put(dyParams).promise();
+       
 
         const params = {
             //Protocol:'lambda',
@@ -79,7 +88,7 @@ exports.register = async (req, res, next) => {
             apiVersion: '2010-03-31'
         }).publish(params).promise();
 
-        console.log("create user in db");
+        console.log("sns.......");
 
         //bcrypt.hashSync(req.body.password, 10)
         console.log(data.password);
