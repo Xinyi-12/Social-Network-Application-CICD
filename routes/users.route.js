@@ -16,6 +16,8 @@ router.get('/self', userController.self);
 
 router.put('/self', userController.update);
 
+
+
 router.post('/self/pic', multer({dest: 'file'}).single('file'), userController.addorUpdateProfilePic);
 router.get('/self/pic', userController.getProfilePic);
 router.delete('/self/pic', userController.deleteProfilePic);
@@ -23,5 +25,5 @@ router.delete('/self/pic', userController.deleteProfilePic);
 
 router.get("/", userController.health);
 
-
+router.post('/verifyUserEmail', userController.verifyUserEmail);
 module.exports = router;
