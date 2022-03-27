@@ -17,6 +17,7 @@ var docClient = new AWS.DynamoDB.DocumentClient()
 
 exports.register = (data, callback) => {
     //const bcryptpass = data.userinfo.password.
+    console.log("register....")
 
     const bcryptpass = bcrypt.hashSync(data.userinfo.password);
 
@@ -83,7 +84,7 @@ exports.register = (data, callback) => {
         )
 
 
-            return callback(null, `Registration successful`);
+            return callback(null, `Registration successful,Please check your email to verify!`);
         }
     );
 
