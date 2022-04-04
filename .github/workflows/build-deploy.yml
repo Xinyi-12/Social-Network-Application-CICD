@@ -65,7 +65,7 @@ jobs:
           cd ..
           pwd
           ls -al
-          
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -94,7 +94,7 @@ jobs:
 
           echo $output
 
-          dId=${echo $output | jq -r '.deploymentId'}
+          dId=$(echo $output | jq -r '.deploymentId')
           aws deploy wait Deployment-successful --deployment-id $dId
 
 
