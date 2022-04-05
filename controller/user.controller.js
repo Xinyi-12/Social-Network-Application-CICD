@@ -58,7 +58,7 @@ exports.health = (req, res, next) => {
 
 }
 
-exports.register = async (req, res, next) => {
+exports.register =  (req, res, next) => {
     registerCount++;
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("register, the " + registerCount + " times request");
@@ -188,27 +188,35 @@ exports.self = (req, res, next) => {
     }
 
 
-    // console.log("0000"+authorization);
+    console.log("0000"+authorization);
 
     const encoded = authorization.substring(6);
+    console.log(encoded);
     const decoded = Buffer.from(encoded, 'base64').toString('ascii');
+    console.log(decoded)
     const [email, password] = decoded.split(':');//[emailId, password]
+
 
     const data = {
         emailId: email,
         password: password
     };
 
+    console.log(data.emailId);
+
     db.query(
         `SELECT * FROM users where emailId = ?`,
         [data.emailId],
 
         (error, results, fields) => {
+            console.log(results);
 
             if (error) {
                 return res.status(403).send({ message: 'Forbidden' });
             }
-            console.log("=== " + data.password + " : " + results[0].password);
+            console.log("--"+data.password);
+            console.log("**" + results[0].password)
+            // console.log("=== " + data.password + " : " + results[0].password);
             const compareResult = bcrypt.compareSync(data.password, results[0].password);
             console.log(compareResult);
             // compareResult = true;
