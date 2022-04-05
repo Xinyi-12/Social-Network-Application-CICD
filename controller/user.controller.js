@@ -28,7 +28,7 @@ const SESConfig = {
 AWS.config.update(SESConfig);
 
 log4js.configure({
-    appenders: { 'file': { type: 'file', filename: 'logs/info.log' } },
+    appenders: { 'file': { type: 'file', filename: 'record.log' } },
     categories: { default: { appenders: ['file'], level: 'debug' } }
   });
 let healthzCount = 0;
@@ -41,7 +41,7 @@ let selfCount = 0;
 exports.health = (req, res, next) => {
     healthzCount++;
 
-    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("the " + healthzCount + " times request");
     console.log("the " + healthzCount + " times request")
 
@@ -60,7 +60,7 @@ exports.health = (req, res, next) => {
 
 exports.register = async (req, res, next) => {
     registerCount++;
-    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("the " + registerCount + " times request");
     console.log("the " + registerCount + " times request")
 
@@ -178,7 +178,7 @@ exports.login = (req, res, next) => {
 
 exports.self = (req, res, next) => {
     selfCount++;
-    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("the " + selfCount + " times request");
     console.log("the " + selfCount + " times request")
 
@@ -241,7 +241,7 @@ exports.self = (req, res, next) => {
 
 exports.update = (req, res, next) => {
     updateuserCount++;
-    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("the " + updateuserCount + " times request");
     console.log("the " + updateuserCount + " times request")
 
@@ -319,7 +319,7 @@ exports.update = (req, res, next) => {
 
 exports.addorUpdateProfilePic = async (req, res, next) => {
     uploadPictureCount++;
-    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("the " + uploadPictureCount + " times request");
     console.log("the " + uploadPictureCount + " times request")
 
@@ -397,7 +397,7 @@ exports.addorUpdateProfilePic = async (req, res, next) => {
 
 exports.getProfilePic = (req, res, next) => {
     getPictureCount++;
-    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("the " + getPictureCount + " times request");
     console.log("the " + getPictureCount + " times request")
 
@@ -477,7 +477,7 @@ exports.getProfilePic = (req, res, next) => {
 
 exports.deleteProfilePic = (req, res, next) => {
     deleteUserPicCout
-    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
     loggerinfo.info("the " + deleteUserPicCout + " times request");
     console.log("the " + deleteUserPicCout + " times request")
 
