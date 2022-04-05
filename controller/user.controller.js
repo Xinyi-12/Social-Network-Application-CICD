@@ -64,7 +64,7 @@ exports.register = async (req, res, next) => {
     loggerinfo.info("register, the " + registerCount + " times request");
     console.log("the " + registerCount + " times request")
 
-    try {
+    // try {
         //validation area
 
         //const bcryptpass = bcryptjs.hashSync(req.body.password, 10)
@@ -78,36 +78,36 @@ exports.register = async (req, res, next) => {
         const tokgen = new TokenGenerator(256, TokenGenerator.BASE62);
 
         const uuid = tokgen.generate();
-        const character = {
+        // const character = {
 
-            username: req.body.emailId,
-            token: uuid,
-            ttl: Math.floor(Date.now() / 1000) + 2 * 60
+        //     username: req.body.emailId,
+        //     token: uuid,
+        //     ttl: Math.floor(Date.now() / 1000) + 2 * 60
 
-        }
-        console.log(character)
+        // }
+        // console.log(character)
 
-        const dyParams = {
-            TableName: 'csye6225',
-            Item: character
-        }
+        // const dyParams = {
+        //     TableName: 'csye6225',
+        //     Item: character
+        // }
 
-        await docClient.put(dyParams).promise();
+        // await docClient.put(dyParams).promise();
 
 
-        const params = {
-            //Protocol:'lambda',
-            Message: req.body.emailId + ',' + uuid,
-            TopicArn: 'arn:aws:sns:us-east-1:696912630749:verification',
-            //Endpoint:'arn:aws:lambda:us-east-1:444584272403:function:testlambda'
-        }
-        console.log(params);
+        // const params = {
+        //     //Protocol:'lambda',
+        //     Message: req.body.emailId + ',' + uuid,
+        //     TopicArn: 'arn:aws:sns:us-east-1:696912630749:verification',
+        //     //Endpoint:'arn:aws:lambda:us-east-1:444584272403:function:testlambda'
+        // }
+        // console.log(params);
 
-        await new AWS.SNS({
-            apiVersion: '2010-03-31'
-        }).publish(params).promise();
+        // await new AWS.SNS({
+        //     apiVersion: '2010-03-31'
+        // }).publish(params).promise();
 
-        console.log("sns.......");
+        // console.log("sns.......");
 
         //bcrypt.hashSync(req.body.password, 10)
         console.log(data.password);
@@ -133,9 +133,9 @@ exports.register = async (req, res, next) => {
             })
         })
 
-    } catch (err) {
-        res.status(500).json(err)
-    }
+    // } catch (err) {
+    //     res.status(500).json(err)
+    // }
 
 };
 
