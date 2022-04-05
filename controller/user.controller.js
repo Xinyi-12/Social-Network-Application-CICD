@@ -42,7 +42,7 @@ exports.health = (req, res, next) => {
     healthzCount++;
 
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
-    loggerinfo.info("the " + healthzCount + " times request");
+    loggerinfo.info("health, the " + healthzCount + " times request");
     console.log("the " + healthzCount + " times request")
 
     res.status(200).send({
@@ -61,7 +61,7 @@ exports.health = (req, res, next) => {
 exports.register = async (req, res, next) => {
     registerCount++;
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
-    loggerinfo.info("the " + registerCount + " times request");
+    loggerinfo.info("register, the " + registerCount + " times request");
     console.log("the " + registerCount + " times request")
 
     try {
@@ -179,7 +179,7 @@ exports.login = (req, res, next) => {
 exports.self = (req, res, next) => {
     selfCount++;
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
-    loggerinfo.info("the " + selfCount + " times request");
+    loggerinfo.info("GET self,the " + selfCount + " times request");
     console.log("the " + selfCount + " times request")
 
     const authorization = req.headers.authorization;
@@ -242,7 +242,7 @@ exports.self = (req, res, next) => {
 exports.update = (req, res, next) => {
     updateuserCount++;
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
-    loggerinfo.info("the " + updateuserCount + " times request");
+    loggerinfo.info("Update user, the " + updateuserCount + " times request");
     console.log("the " + updateuserCount + " times request")
 
     const authorization = req.headers.authorization;
@@ -320,7 +320,7 @@ exports.update = (req, res, next) => {
 exports.addorUpdateProfilePic = async (req, res, next) => {
     uploadPictureCount++;
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
-    loggerinfo.info("the " + uploadPictureCount + " times request");
+    loggerinfo.info("addorUpdateProfilePic, the " + uploadPictureCount + " times request");
     console.log("the " + uploadPictureCount + " times request")
 
     const authorization = req.headers.authorization;
@@ -398,7 +398,7 @@ exports.addorUpdateProfilePic = async (req, res, next) => {
 exports.getProfilePic = (req, res, next) => {
     getPictureCount++;
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
-    loggerinfo.info("the " + getPictureCount + " times request");
+    loggerinfo.info("getProfilePic, the " + getPictureCount + " times request");
     console.log("the " + getPictureCount + " times request")
 
 
@@ -478,7 +478,7 @@ exports.getProfilePic = (req, res, next) => {
 exports.deleteProfilePic = (req, res, next) => {
     deleteUserPicCout
     var loggerinfo = log4js.getLogger('record'); // initialize the var to use.
-    loggerinfo.info("the " + deleteUserPicCout + " times request");
+    loggerinfo.info("deleteProfilePic,the " + deleteUserPicCout + " times request");
     console.log("the " + deleteUserPicCout + " times request")
 
     const authorization = req.headers.authorization;
