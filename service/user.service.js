@@ -28,60 +28,60 @@ exports.register = (data, callback) => {
             if (error) {
                 return callback(error);
             }
-            console.log(new Date());
+            // console.log(new Date());
 
-            var param = {
-                TableName: 'csye6225',
-                Key: {
-                    'username': {
-                        S: data.emailId
-                    }
-                }
-            };
+            // var param = {
+            //     TableName: 'csye6225',
+            //     Key: {
+            //         'username': {
+            //             S: data.emailId
+            //         }
+            //     }
+            // };
 
-            ddb.getItem(param, (err, data) => {
-
-
-                console.log(data.Item)
-                if (data.Item === undefined) {
-
-                    const character = {
-
-                        username: req.body.emailId,
-                        token: uuid,
-                        ttl:Math.floor(Date.now() / 1000)+2*60
-
-                    }
-                    const dyParams = {
-                        TableName: tableName,
-                        Item: character
-                    }
-
-                    docClient.put(dyParams).promise()
+            // ddb.getItem(param, (err, data) => {
 
 
+        //         console.log(data.Item)
+        //         if (data.Item === undefined) {
 
-                    const params = {
+        //             const character = {
 
-                        Message: req.body.emailId + ',' + uuid,
-                        TopicArn: 'arn:aws:sns:us-east-1:696912630749:verification',
+        //                 username: req.body.emailId,
+        //                 token: uuid,
+        //                 ttl:Math.floor(Date.now() / 1000)+2*60
 
-                    }
+        //             }
+        //             const dyParams = {
+        //                 TableName: tableName,
+        //                 Item: character
+        //             }
+
+        //             docClient.put(dyParams).promise()
 
 
-                    new AWS.SNS({
-                        apiVersion: '2010-03-31'
-                    }).publish(params).promise();
-                    res.status(200).json("Please check your email to verify!");
-                    return;
 
-                } else {
+        //             const params = {
 
-                    res.status(400).json("Please login in your email to verify your account!");
-                    return;
-                }
-            }
-        )
+        //                 Message: req.body.emailId + ',' + uuid,
+        //                 TopicArn: 'arn:aws:sns:us-east-1:696912630749:verification',
+
+        //             }
+
+
+        //             new AWS.SNS({
+        //                 apiVersion: '2010-03-31'
+        //             }).publish(params).promise();
+        //             res.status(200).json("Please check your email to verify!");
+        //             return;
+
+        //         } else {
+
+        //             res.status(400).json("Please login in your email to verify your account!");
+        //             return;
+        //         }
+        //     }
+        // )
 
 
             return callback(null, `Registration successful,Please check your email to verify!`);
