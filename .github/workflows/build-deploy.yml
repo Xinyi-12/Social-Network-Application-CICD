@@ -82,20 +82,6 @@ jobs:
         uses: unfor19/install-aws-cli-action@master
         with:
           version: "2"
-        # run: |
-        #   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        #   unzip awscliv2.zip
-        #   sudo ./aws/install
-      # - name: test
-      #   run: |
-      #     echo ${{ secrets.AWS_ACCESSKEY_ID }} | sed 's/./& /g'
-      #     echo  ${{  secrets.AWS_SECRET_ACCESS_KEY }} | sed 's/./& /g'
-      #     echo  ${{ secrets.S3_CODEDEPLOY_BUCKET }} | sed 's/./& /g'
-      #     echo ${{ secrets.BWS_ACCESSKEY_ID }} | sed 's/./& /g'
-      #     echo  ${{  secrets.BWS_SECRET_ACCESS_KEY }} | sed 's/./& /g'
-      #     echo  ${{ secrets.S4_CODEDEPLOY_BUCKET }} | sed 's/./& /g'
-      #     echo ${{ env.AWS_REGION }}
-      #     echo ${{ secrets.GITHUB_TOKEN }}
 
       # Configure AWS credentials
       - name: Configure AWS Credentials
@@ -104,11 +90,11 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESSKEY_ID }} 
           aws-secret-access-key: ${{  secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:  ${{env.AWS_REGION}}
+          aws-region:  us-east-1
         env:
           aws-access-key-id:  ${{secrets.AWS_ACCESSKEY_ID}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          aws-region:  ${{env.AWS_REGION}}
+          aws-region:  us-east-1
      
       # Deploy push to AWS S3
       - name: AWS Deploy push
@@ -130,6 +116,3 @@ jobs:
            --file-exists-behavior OVERWRITE \
            --s3-location bucket=${{ secrets.S3_CODEDEPLOY_BUCKET }},key=${{ env.ARTIFACT_NAME }},bundleType=zip \
 
-      # - name: Copy Artifact to S3
-      #   run: |
-      #     aws s3 sync ./${{ env.ARTIFACT_NAME }} s3://${{ secrets.S3_CODEDEPLOY_BUCKET }}
