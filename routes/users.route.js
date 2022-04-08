@@ -6,8 +6,14 @@ const jsonParser = bodyParser.json()
 const multer = require('multer');
 
 //create a user 
- router.post('/new02', userController.register);
-
+function statsd (path) {
+    return function (req, res, next) {
+      var method = req.method || 'unknown_method';
+      req.statsdKey = ['http', method.toLowerCase(), path].join('.');
+      next();
+    };
+  }
+ router.post('/new02', statsd ("createuser"),userController.register);
 
 
 const auth = require('../authorization');

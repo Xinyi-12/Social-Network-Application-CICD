@@ -5,7 +5,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const auth = require('./authorization');
 const expressJWT = require('express-jwt');
 const multer = require('multer');
-
+var expressStatsd = require('express-statsd');
 
 const app = express();
 
@@ -14,6 +14,7 @@ const userRoutes = require('./routes/users.route');
 // const postRoutes = require('./routes/post.route');
 // app.use(multer().single('file'));
 
+app.use(expressStatsd());
 app.use('/healthz',userRoutes);
 
 
