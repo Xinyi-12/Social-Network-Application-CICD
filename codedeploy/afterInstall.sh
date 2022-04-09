@@ -1,6 +1,6 @@
 #!/bin/bash
 # source ~/.bash_profile
-# source /home/ec2-user/.bash_profile
+source /home/ec2-user/.bash_profile
 # sudo mv -f /home/ec2-user/config.js /home/ec2-user/model/
 cd /home/ec2-user/
 sudo chmod 775 /home/ec2-user/
