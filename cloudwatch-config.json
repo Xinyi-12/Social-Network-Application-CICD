@@ -1,0 +1,60 @@
+{
+	"agent": {
+		"metrics_collection_interval": 10,
+		"logfile": "/var/log/amazon/amazon-cloudwatch-agent/amazon-cloudwatch-agent.log",
+		"run_as_user": "ec2-user"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [{
+					"file_path":"/home/ec2-user/.pm2/pm2.log",
+					"log_group_name": "csye6225-spring",
+					"log_stream_name": "webapp"
+				},
+				{
+					"file_path": "/home/ec2-user/record.log",
+					"log_group_name": "csye6225-spring2022",
+					"log_stream_name": "count"
+				}
+			]
+			}
+		},
+		"log_stream_name": "cloudwatch_log_stream"
+	},
+	"metrics": {
+		"aggregation_dimensions": [
+			[
+				"InstanceId"
+			]
+		],
+		"append_dimensions": {
+			"AutoScalingGroupName": "${aws:AutoScalingGroupName}",
+			"ImageId": "${aws:ImageId}",
+			"InstanceId": "${aws:InstanceId}",
+			"InstanceType": "${aws:InstanceType}"
+		},
+		"metrics_collected": {
+			"disk": {
+				"measurement": [
+					"used_percent"
+				],
+				"metrics_collection_interval": 60,
+				"resources": [
+					"*"
+				]
+			},
+			"mem": {
+				"measurement": [
+					"mem_used_percent"
+				],
+				"metrics_collection_interval": 60
+			},
+			"statsd": {
+				"metrics_aggregation_interval": 300,
+				"metrics_collection_interval": 15,
+				"service_address": ":8125"
+			}
+		}
+	}
+}
