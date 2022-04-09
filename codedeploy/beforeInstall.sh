@@ -1,6 +1,6 @@
 #!/bin/bash
 source /home/ec2-user/.bash_profile
-# export PATH=/home/ec2-user/.nvm/versions/node/v17.8.0/bin:/usr/local/bin:/usr/local/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin:$PATH
+export PATH=/home/ec2-user/.nvm/versions/node/v17.8.0/bin:/usr/local/bin:/usr/local/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin:$PATH
 
 pm2 stop index.js
 pm2 delete all
