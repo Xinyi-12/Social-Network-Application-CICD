@@ -19,7 +19,7 @@ app.use('/healthz',userRoutes);
 
 // app.use(expressJWT({ secret: auth.secretKey}).unless({path: [/^\/v1\/user/,/^\/healthz/] }))
 
-app.use('/v1/user', userRoutes);
+app.use('/v2/user', userRoutes);
 
 
 

@@ -26,4 +26,5 @@ sudo rm -rf /home/ec2-user/package.json
 sudo rm -rf /home/ec2-user/README.md 
 sudo rm -rf /home/ec2-user/s3.js
 sudo rm -rf /home/ec2-user/test.txt
+sudo rm -rf /home/ec2-user/cloudwatch-config.json
 
