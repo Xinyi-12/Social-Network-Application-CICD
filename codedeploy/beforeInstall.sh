@@ -10,7 +10,6 @@ sudo rm -rf /home/ec2-user/codedeploy
 sudo rm -rf /home/ec2-user/config
 sudo rm -rf /home/ec2-user/controller
 sudo rm -rf /home/ec2-user/file
-sudo rm -rf /home/ec2-user/model
 sudo rm -rf /home/ec2-user/node_modules 
 sudo rm -rf /home/ec2-user/packer
 sudo rm -rf /home/ec2-user/packer/ami.json
