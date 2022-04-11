@@ -18,11 +18,11 @@ function statsd (path) {
 
 const auth = require('../authorization');
 const { func } = require('joi');
-router.post('/login', userController.login);
+router.post('/login', statsd ("login"),userController.login);
 
-router.get('/self',jsonParser, userController.self);
+router.get('/self', statsd ("get-self"), userController.self);
 
-router.put('/self', userController.update);
+router.put('/self', statsd ("put-self"),userController.update);
 
 
 
