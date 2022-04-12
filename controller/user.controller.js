@@ -107,6 +107,9 @@ exports.self = (req, res, next) => {
         return res.status(403).send({ message: 'Forbidden' });
     }
 
+
+    // console.log("0000"+authorization);
+
     const encoded = authorization.substring(6);
     const decoded = Buffer.from(encoded, 'base64').toString('ascii');
     const [email, password] = decoded.split(':');//[emailId, password]
