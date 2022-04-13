@@ -6,11 +6,14 @@ const bcrypt = require('bcryptjs');
 const decode = require('jwt-decode');
 const { self } = require('../controller/user.controller');
 
+var AWS = require('aws-sdk');
+// Set the region 
+AWS.config.update({
+    region: 'us-east-1'
+});
 
-import { ddbDocClient } from "../ddbDocClient.js";
 var ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-
-
+var docClient = new AWS.DynamoDB.DocumentClient()
 
 exports.register = (data, callback) => {
     //const bcryptpass = data.userinfo.password.
@@ -53,7 +56,7 @@ exports.register = (data, callback) => {
                         Item: character
                     }
 
-                    ddbDocClient.put(dyParams).promise()
+                    docClient.put(dyParams).promise()
 
 
 

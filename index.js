@@ -11,7 +11,7 @@ const app = express();
 
 app.use(bodyParser.json());
 const userRoutes = require('./routes/users.route');
-const postRoutes = require('./routes/post.route');
+// const postRoutes = require('./routes/post.route');
 // app.use(multer().single('file'));
 
 app.use('/healthz',userRoutes);
@@ -23,7 +23,7 @@ app.use('/v1/user', userRoutes);
 
 
 
-app.use('/posts',postRoutes);
+// app.use('/posts',postRoutes);
 
 
 /** Swagger Initialization */
