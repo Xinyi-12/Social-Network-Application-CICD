@@ -663,70 +663,79 @@ exports.deleteProfilePic = (req, res, next) => {
 // };
 
 
-// export const verifyUserEmail = async (req, res) => {
-//     const token = req.query.token;
-//     const email = req.query.email;
+exports.verifyUserEmail = async (req, res) => {
+    const token = req.query.token;
+    const email = req.query.email;
 
-//     try {
-//         var params = {
-//             TableName: 'csye6225',
-//             Key: {
-//                 'username': {
-//                     S: email
-//                 }
-//             }
-//         };
+    try {
+        var params = {
+            TableName: 'csye6225',
+            Key: {
+                'username': {
+                    S: email
+                }
+            }
+        };
 
-//         ddb.getItem(params, function (err, data) {
-//             if (data.Item === undefined){
-//                 res.status(400).json("The token has been expired!");
-//                 return
-//             }
-//             if(data.Item.ttl.N<Math.floor(Date.now() / 1000)){
-//                 res.status(400).json("The token has been expired!");
-//                 return
-//             }
-//             const dataEmail = data.Item.username.S
-//             const dataToken = data.Item.token.S
-
-
-//             console.log(dataEmail)
-//             console.log(dataToken)
-//             if (dataToken == token) {
-
-//                 const userExist = userDB.findOne({
-//                     attributes: {
-//                         exclude: ['password']
-//                     },
-//                     where: {
-//                         username: email
-//                     }
-//                 })
-//                 if (userExist === null) {
-//                     res.status(400).json("No Found");
-//                     return
-//                 }
-
-//                 const user = {
-//                     verify: true
-
-//                 };
-
-//                 userDB.update(user, {
-//                     where: {
-//                         username: email
-//                     }
-//                 })
-//                 res.status(200).json("User has been verified!");
-//             } else {
-//                 res.status(200).json("Token does not match!");
-//                 return;
-//             }
-
-//         })
+        ddb.getItem(params, function (err, data) {
+            if (data.Item === undefined){
+                res.status(400).json("The token has been expired!");
+                return
+            }
+            if(data.Item.ttl.N<Math.floor(Date.now() / 1000)){
+                res.status(400).json("The token has been expired!");
+                return
+            }
+            const dataEmail = data.Item.username.S
+            const dataToken = data.Item.token.S
 
 
-//     } catch (err) {
-//         res.status(500).json(err);
-//     }
-// };
+            console.log(dataEmail)
+            console.log(dataToken)
+            if (dataToken == token) {
+                db.query(
+                    `SELECT * FROM users where emailId = ?`,
+                    [email],
+            
+                    (error, results, fields) => {
+            
+                        if (error) {
+                            return res.status(403).send({ message: 'Forbidden' });
+                        }
+                        console.log("=== " + data.password + " : " + results[0].password);
+                        const compareResult = bcrypt.compareSync(data.password, results[0].password);
+                        console.log(compareResult);
+                        // compareResult = true;
+                        console.log(results);
+            
+                        if (results.length > 0 && compareResult) {
+                            return;
+                        } else {
+                            return res.status(403).send({ message: 'Forbidden' });
+                        }
+                    }
+                )
+
+                const user = {
+                    verify: true
+
+                };
+
+                // userDB.update(user, {
+                //     where: {
+                //         username: email
+                //     }
+                // })
+                res.status(200).json("User has been verified!");
+            } else {
+                res.status(200).json("Token does not match!");
+                return;
+            }
+
+        })
+
+
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
