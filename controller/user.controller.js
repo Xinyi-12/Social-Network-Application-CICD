@@ -18,15 +18,6 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient()
 
-const SESConfig = {
-    apiVersion: "2010-12-01",
-    accessKeyId: "AKIA2EQZ22PO56Q33A37",      // should be:  process.env.AWS_ACCESS_ID
-    secretAccessKey: "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",  
-    region: "us-east-1"
-}
-
-AWS.config.update(SESConfig);
-
 
 // app.use(expressJWT(secretKey));
 
