@@ -4,10 +4,19 @@ const userService = require('../service/user.service');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../authorization');
 const decode = require('jwt-decode');
-// const uuid = require('uuid');
-const uuid = require('node-uuid');
 const { uploadFile } = require('../s3');
 const db = require('../config/db.config');
+const { v4: uuid } = require('uuid');
+const { v4 } = require('node-uuid');
+const TokenGenerator = require('uuid-token-generator');
+
+var AWS = require('aws-sdk');
+// Set the region 
+AWS.config.update({
+    region: 'us-east-1'
+});
+
+var docClient = new AWS.DynamoDB.DocumentClient()
 
 
 
@@ -26,41 +35,80 @@ exports.health = (req, res, next) => {
 
 }
 
-exports.register = (req, res, next) => {
+exports.register = async (req, res, next) => {
 
-    //validation area
+    try {
+        //validation area
 
-    //const bcryptpass = bcryptjs.hashSync(req.body.password, 10)
-    const data = {
-        userinfo: req.body,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        emailId: req.body.emailId,
-        password: req.body.password
-    };
+        //const bcryptpass = bcryptjs.hashSync(req.body.password, 10)
+        const data = {
+            userinfo: req.body,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            emailId: req.body.emailId,
+            password: req.body.password
+        };
+        const tokgen = new TokenGenerator(256, TokenGenerator.BASE62);
 
-    //bcrypt.hashSync(req.body.password, 10)
-    console.log(data.password);
+        // const uuid = v4();
+        const character = {
 
-    userService.register(data, (error, result) => {
-        if (error) {
-            console.log(error);
-            return res.status(400).send({
-                status: 400,
-                success: 0,
-                data: 'bad request'
-            });
+            username: req.body.emailId,
+            token: tokgen.generate(),
+            ttl: Math.floor(Date.now() / 1000) + 2 * 60
+
+        }
+        console.log(character)
+
+        const dyParams = {
+            TableName: 'csye6225',
+            Item: character
         }
 
-        // const tokenStr = jwt.sign({ username: data.firstName}, secretKey, {expiresIn:'30s'});
+        await docClient.put(dyParams).promise();
 
-        return res.status(200).send({
-            status: 200,
-            success: 1,
-            data: result,
-            // token: tokenStr
+        const params = {
+            //Protocol:'lambda',
+            Message: req.body.emailId + ',' + uuid,
+            TopicArn: 'arn:aws:sns:us-east-1:696912630749:verification',
+            //Endpoint:'arn:aws:lambda:us-east-1:444584272403:function:testlambda'
+        }
+        console.log(params);
+
+        await new AWS.SNS({
+            apiVersion: '2010-03-31'
+        }).publish(params).promise();
+
+        console.log("create user in db");
+
+        //bcrypt.hashSync(req.body.password, 10)
+        console.log(data.password);
+
+
+        userService.register(data, (error, result) => {
+            if (error) {
+                console.log(error);
+                return res.status(400).send({
+                    status: 400,
+                    success: 0,
+                    data: 'bad request'
+                });
+            }
+
+            // const tokenStr = jwt.sign({ username: data.firstName}, secretKey, {expiresIn:'30s'});
+
+            return res.status(200).send({
+                status: 200,
+                success: 1,
+                data: result,
+                // token: tokenStr
+            })
         })
-    })
+
+    } catch (err) {
+        res.status(500).json(err)
+    }
+
 };
 
 exports.login = (req, res, next) => {
@@ -514,45 +562,45 @@ exports.deleteProfilePic = (req, res, next) => {
 //             ddb.getItem(param, (err, data) => {
 
 
-//                     console.log(data.Item)
-//                     if (data.Item === undefined) {
+//                 console.log(data.Item)
+//                 if (data.Item === undefined) {
 
-//                         const character = {
+//                     const character = {
 
-//                             username: req.body.username,
-//                             token: uuid,
-//                             ttl:Math.floor(Date.now() / 1000)+2*60
+//                         username: req.body.username,
+//                         token: uuid,
+//                         ttl: Math.floor(Date.now() / 1000) + 2 * 60
 
-//                         }
-//                         const dyParams = {
-//                             TableName: tableName,
-//                             Item: character
-//                         }
-
-//                         docClient.put(dyParams).promise()
-
-
-
-//                         const params = {
-
-//                             Message: req.body.username + ',' + uuid,
-//                             TopicArn: 'arn:aws:sns:us-east-1:971613862138:verification',
-
-//                         }
-
-
-//                         new AWS.SNS({
-//                             apiVersion: '2010-03-31'
-//                         }).publish(params).promise();
-//                         res.status(200).json("Please check your email to verify!");
-//                         return;
-
-//                     } else {
-
-//                         res.status(400).json("Please login in your email to verify your account!");
-//                         return;
 //                     }
+//                     const dyParams = {
+//                         TableName: tableName,
+//                         Item: character
+//                     }
+
+//                     docClient.put(dyParams).promise()
+
+
+
+//                     const params = {
+
+//                         Message: req.body.username + ',' + uuid,
+//                         TopicArn: 'arn:aws:sns:us-east-1:971613862138:verification',
+
+//                     }
+
+
+//                     new AWS.SNS({
+//                         apiVersion: '2010-03-31'
+//                     }).publish(params).promise();
+//                     res.status(200).json("Please check your email to verify!");
+//                     return;
+
+//                 } else {
+
+//                     res.status(400).json("Please login in your email to verify your account!");
+//                     return;
 //                 }
+//             }
 
 //             )
 //             return;
@@ -575,7 +623,7 @@ exports.deleteProfilePic = (req, res, next) => {
 
 //             username: req.body.username,
 //             token: uuid,
-//             ttl:Math.floor(Date.now() / 1000)+2*60
+//             ttl: Math.floor(Date.now() / 1000) + 2 * 60
 
 //         }
 //         console.log(character)
