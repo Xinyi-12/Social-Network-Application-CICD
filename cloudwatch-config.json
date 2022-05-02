@@ -9,15 +9,16 @@
 			"files": {
 				"collect_list": [
 					{
-						"file_path": "/home/ec2-user/.pm2/pm2.log",
-						"log_group_name": "csye6225-spring",
-						"log_stream_name": "webapp"
-					},
-					{
 						"file_path": "/home/ec2-user/record.log",
 						"log_group_name": "csye6225-spring2022",
 						"log_stream_name": "count"
+					},
+					{
+						"file_path": "/home/ec2-user/.pm2/pm2.log",
+						"log_group_name": "csye6225-spring",
+						"log_stream_name": "webapp"
 					}
+
 				]
 			}
 		},
