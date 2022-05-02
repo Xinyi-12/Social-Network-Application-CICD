@@ -9,6 +9,7 @@ const db = require('../config/db.config');
 const { v4: uuid } = require('uuid');
 const { v4 } = require('node-uuid');
 const TokenGenerator = require('uuid-token-generator');
+const log4js = require('log4js'); // include log4js
 
 var AWS = require('aws-sdk');
 // Set the region 
@@ -26,10 +27,18 @@ const SESConfig = {
 }
 AWS.config.update(SESConfig);
 
-
-// app.use(expressJWT(secretKey));
+log4js.configure({
+    appenders: { 'file': { type: 'file', filename: 'logs/info.log' } },
+    categories: { default: { appenders: ['file'], level: 'debug' } }
+  });
+let healthzCount = 0;
 
 exports.health = (req, res, next) => {
+    healthzCount++;
+
+    var loggerinfo = log4js.getLogger('info'); // initialize the var to use.
+    loggerinfo.info("the " + healthzCount + " times request");
+
     res.status(200).send({
         status: 200,
 
@@ -39,6 +48,7 @@ exports.health = (req, res, next) => {
         status: 404
 
     })
+
 
 }
 
@@ -73,7 +83,7 @@ exports.register = async (req, res, next) => {
         }
 
         await docClient.put(dyParams).promise();
-       
+
 
         const params = {
             //Protocol:'lambda',
@@ -678,11 +688,11 @@ exports.verifyUserEmail = async (req, res) => {
         };
 
         ddb.getItem(params, function (err, data) {
-            if (data.Item === undefined){
+            if (data.Item === undefined) {
                 res.status(400).json("The token has been expired!");
                 return
             }
-            if(data.Item.ttl.N<Math.floor(Date.now() / 1000)){
+            if (data.Item.ttl.N < Math.floor(Date.now() / 1000)) {
                 res.status(400).json("The token has been expired!");
                 return
             }
@@ -696,9 +706,9 @@ exports.verifyUserEmail = async (req, res) => {
                 db.query(
                     `SELECT * FROM users where emailId = ?`,
                     [email],
-            
+
                     (error, results, fields) => {
-            
+
                         if (error) {
                             return res.status(403).send({ message: 'Forbidden' });
                         }
@@ -707,7 +717,7 @@ exports.verifyUserEmail = async (req, res) => {
                         console.log(compareResult);
                         // compareResult = true;
                         console.log(results);
-            
+
                         if (results.length > 0 && compareResult) {
                             return;
                         } else {
@@ -739,3 +749,4 @@ exports.verifyUserEmail = async (req, res) => {
         res.status(500).json(err);
     }
 };
+
