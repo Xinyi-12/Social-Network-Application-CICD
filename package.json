@@ -19,6 +19,7 @@
     "express": "^4.17.3",
     "express-joi": "^0.3.1",
     "express-jwt": "^5.3.3",
+    "express-statsd": "^0.3.0",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
