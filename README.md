@@ -4,9 +4,9 @@
 - [Assignment requirement](#assignment-requirement)
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
-- [My details](#my-details)
 
-## Assignment requirement
+
+## Project requirement
 
 **Requirements:**
 
@@ -45,11 +45,5 @@ server running at 127.0.0.1
 
 
 
-## My details
 
-Name: Xinyi Chen
-
-NUID: 001582439
-
-Email: [chen.xiny@northeastern.edu](mailto:chen.xiny@northeastern.edu)
 
