@@ -6,9 +6,6 @@ const { createPool } = require("mysql");
 
 /** Connection pool creation - START */
 const db = createPool({
-  port: 3306,
-  host: "csye622506.csapfweat4lm.us-east-1.rds.amazonaws.com",
-  database: "csye622506",
   connectionLimit: 10,
 });
 
